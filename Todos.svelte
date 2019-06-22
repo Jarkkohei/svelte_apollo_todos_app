@@ -17,6 +17,17 @@
   const todos = query(client, { query: GET_TODOS });
 </script>
 
+<style>
+  ul {
+    list-style: none;
+  }
+
+  .error {
+    color: red;
+  }
+</style>
+
+<ul>
 <h2>Todos</h2>
 {#await $todos}
   Loading todos...
@@ -28,5 +39,6 @@
     </li>
   {/each}
 {:catch error}
-  <p>{error}</p>
+  <p class="error">{error}</p>
 {/await}
+</ul>
