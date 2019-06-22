@@ -25,6 +25,10 @@
   .error {
     color: red;
   }
+
+  .done {
+    text-decoration: line-through;
+  }
 </style>
 
 <ul>
@@ -34,7 +38,7 @@
 {:then result}
   <p>Total todos: {result.data.getTodos.length}</p>
   {#each result.data.getTodos as todo, index}
-    <li>
+    <li class:done="{todo.done}">
       {todo.text}
     </li>
   {/each}
