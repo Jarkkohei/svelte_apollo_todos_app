@@ -1,6 +1,8 @@
 <script>
-  import { getClient, query } from "svelte-apollo";
+  import { getClient, query, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
+
+  let text = "";
 
   const GET_TODOS = gql`
     {
@@ -12,9 +14,33 @@
     }
   `;
 
+  const ADD_TODO = gql`
+    mutation($text: String!) {
+      addTodo(text: $text) {
+        id
+        done
+        text
+      }
+    }
+  `;
+
   const client = getClient();
 
   const todos = query(client, { query: GET_TODOS });
+
+  function addTodo() {
+    mutate(client, {
+      mutation: ADD_TODO,
+      variables: { text }
+    })
+      .then(() => {
+        text = "";
+        todos.refetch();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 </script>
 
 <style>
@@ -30,6 +56,11 @@
     text-decoration: line-through;
   }
 </style>
+
+<form on:submit|preventDefault={addTodo}>
+  <input placeholder="Add a todo" bind:value={text}>
+  <button>Submit</button>
+</form>
 
 <ul>
 <h2>Todos</h2>
