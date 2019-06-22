@@ -63,9 +63,25 @@
       });
   }
 
-  function deleteTodo() {
+  function deleteTodo(todoId) {
+    id = todoId;
     mutate(client, {
       mutation: DELETE_TODO,
+      variables: { id }
+    })
+      .then(() => {
+        id = "";
+        todos.refetch();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  function toggleTodo(todoId) {
+    id = todoId;
+    mutate(client, {
+      mutation: TOGGLE_TODO,
       variables: { id }
     })
       .then(() => {
@@ -90,6 +106,14 @@
   .done {
     text-decoration: line-through;
   }
+
+  .text {
+    cursor: pointer;
+  }
+
+  button {
+    cursor: pointer;
+  }
 </style>
 
 <form on:submit|preventDefault={addTodo}>
@@ -105,11 +129,8 @@
   <p>Total todos: {result.data.getTodos.length}</p>
   {#each result.data.getTodos as todo}
     <li class:done="{todo.done}">
-      {todo.text}
-      <button on:click={() => { 
-        id = todo.id;
-        deleteTodo(); 
-      }}>X</button>
+      <span class="text" on:click={() => toggleTodo(todo.id)}>{todo.text}</span>
+      <button on:click={() => deleteTodo(todo.id)}>X</button>
     </li>
   {/each}
 {:catch error}
