@@ -1,29 +1,31 @@
-# svelte app
+# Svelte - Apollo Todos App
 
-This is a project template for [Svelte](https://svelte.technology) apps. It lives at https://github.com/sveltejs/template.
+A simple Todos app with Svelte using Apollo GraphQL Server
 
-To create a new project based on this template using [degit](https://github.com/Rich-Harris/degit):
+Credits to Youtube channel `Code artistry` - [Svelte with GraphQL - Getting Started](https://www.youtube.com/watch?v=WqOLx2yuF3M)
+
+---
+
+## Install
+
+Clone the repository
 
 ```bash
-npm install -g degit # you only need to do this once
-
-degit sveltejs/template svelte-app
-cd svelte-app
+git clone https://github.com/Jarkkohei/svelte_apollo_todos_app.git
 ```
 
-*Note that you will need to have [Node.js](https://nodejs.org) installed.*
-
-
-## Get started
+_Note that you will need to have [Node.js](https://nodejs.org) installed._
 
 Install the dependencies...
 
 ```bash
-cd svelte-app
+cd svelte_apollo_todos_app
 npm install
 ```
 
-...then start [Rollup](https://rollupjs.org):
+---
+
+## Run
 
 ```bash
 npm run dev
@@ -31,6 +33,7 @@ npm run dev
 
 Navigate to [localhost:5000](http://localhost:5000). You should see your app running. Edit a component file in `src`, save it, and reload the page to see your changes.
 
+---
 
 ## Deploying to the web
 
