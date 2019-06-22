@@ -2,6 +2,7 @@
   import { getClient, query, mutate } from "svelte-apollo";
   import { gql } from "apollo-boost";
 
+  let id = "";
   let text = "";
 
   const GET_TODOS = gql`
@@ -24,6 +25,26 @@
     }
   `;
 
+  const DELETE_TODO = gql`
+    mutation($id: String!) {
+      deleteTodo(id: $id) {
+        id
+        text
+        done
+      }
+    }
+  `;
+
+  const TOGGLE_TODO = gql`
+    mutation($id: String!) {
+      toggleTodo(id: $id) {
+        id
+        text
+        done
+      }
+    }
+  `;
+
   const client = getClient();
 
   const todos = query(client, { query: GET_TODOS });
@@ -35,6 +56,20 @@
     })
       .then(() => {
         text = "";
+        todos.refetch();
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  function deleteTodo() {
+    mutate(client, {
+      mutation: DELETE_TODO,
+      variables: { id }
+    })
+      .then(() => {
+        id = "";
         todos.refetch();
       })
       .catch(err => {
@@ -68,9 +103,13 @@
   Loading todos...
 {:then result}
   <p>Total todos: {result.data.getTodos.length}</p>
-  {#each result.data.getTodos as todo, index}
+  {#each result.data.getTodos as todo}
     <li class:done="{todo.done}">
       {todo.text}
+      <button on:click={() => { 
+        id = todo.id;
+        deleteTodo(); 
+      }}>X</button>
     </li>
   {/each}
 {:catch error}
